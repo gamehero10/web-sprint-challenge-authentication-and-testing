@@ -35,22 +35,14 @@ router.post('/register', checkNewUser, validateCredentials , async (req, res, ne
   */
  
   try {
-  const {username, password} = req.body;
-      const user = await Users.getByUsername(username)
-      if(user) {
-        return next({status: 409, message: "username taken"});
-      } else if(!req.body.username || !req.body.password) {
-        return next({status: 400, message: "username and password required"});
-      }
-
-      const newUser = await Users.createUser({
-        username,
-        password: await bcrypt.hashSync(password, 8)
-      })
-      res.status(201).json(newUser);
-
-  } catch(err) {
-    next(err);
+    const {username, password} = req.body;
+    const user = await Users.createUser({
+      username: username,
+      password: bcrypt.hashSync(password, 8)
+    })
+    res.status(201).json(user);
+  } catch (err) {
+    return next({status: 400, message: "username and password required"});
   }
     
 
@@ -82,41 +74,11 @@ router.post('/login', validateCredentials, async (req, res, next) => {
       the response body should include a string exactly as follows: "invalid credentials".
   */
 
-      try {
-        const { username, password } = req.body
-        const user = await Users.findByUsername(username)
-    
-        if(!user) {
-          return res.status(401).json({
-            message: "Invalid credentials"
-          })
-        }
-    
-        const passwordValid = await bcrypt.compare(password, user.password)
-    
-        if (!passwordValid) {
-          return res.status(401).json({
-            message: "Invalid credentials"
-          })
-        }
-    
-        const token = jwt.sign({
-          userID: user.id,
-        }, process.env.JWT_SECRET)
-    
-        res.cookie("token", token)
-    
-        res.json({
-          message: `welcome, ${user.username}!`
-        })
-      } catch(err) {
-        next(err)
-      }
-    
+      
    
     
 
-      /*if(bcrypt.compareSync(req.body.password, req.user.password)) {
+      if(bcrypt.compareSync(req.body.password, req.user.password)) {
            const token = buildToken(req.user);
            res.json({
             message: `welcome, ${req.user.username}`,
@@ -124,11 +86,11 @@ router.post('/login', validateCredentials, async (req, res, next) => {
            })
       } else {
            next({status: 401, message: "invalid credentials"});
-      } */
+      } 
 });
 
 
-/*function buildToken(user) {
+function buildToken(user) {
    const payload = {
     subject: user.id,
     username: user.username,
@@ -138,6 +100,6 @@ router.post('/login', validateCredentials, async (req, res, next) => {
     expiresIn: '1d'
    }
    return jwt.sign(payload, JWT_SECRET, options);
-} */
+} 
 
 module.exports = router;

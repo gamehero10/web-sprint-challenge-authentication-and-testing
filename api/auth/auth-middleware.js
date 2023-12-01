@@ -18,9 +18,6 @@ async function checkNewUser(req, res, next)  {
 
 
 
-
-
-
 async function validateCredentials(req, res, next) {
     if(req.body.username && req.body.password) {
        next();
