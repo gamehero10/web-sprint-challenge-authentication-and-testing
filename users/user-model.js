@@ -8,7 +8,7 @@ async function createUser(user) {
 }
 
 async function getByUsername(username) {
-    const name = await db('users').where({username: username}).fiest();
+    const name = await db('users').where({username: username}).first();
     return name;
 }
 

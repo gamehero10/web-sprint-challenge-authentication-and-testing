@@ -74,7 +74,7 @@ router.post('/login', authenticateUser, validateCredentials, (req, res, next) =>
     4- On FAILED login due to `username` not existing in the db, or `password` being incorrect,
       the response body should include a string exactly as follows: "invalid credentials".
   */
-  console.log('hello from auth-router');
+  
 
 
 });
