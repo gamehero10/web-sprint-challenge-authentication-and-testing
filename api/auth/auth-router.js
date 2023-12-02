@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { JWT_SECRET } = require("../../secrets/index"); // use this secret!
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { checkNewUser, validateCredentials} = require('./auth-middleware');
+const { checkNewUser,  validateCredentials} = require('./auth-middleware');
 const Users = require('../../users/user-model');
 
 
@@ -51,7 +51,7 @@ router.post('/register', validateCredentials, checkNewUser , async (req, res, ne
 });
 
 router.post('/login', validateCredentials, async (req, res, next) => {
-  res.end('implement login, please!');
+  //res.end('implement login, please!');
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -76,20 +76,36 @@ router.post('/login', validateCredentials, async (req, res, next) => {
       the response body should include a string exactly as follows: "invalid credentials".
   */
  
-      let {username, password} = req.body;
-      
-      Users.getByUsername({username})
-      .then(([user])  => {
-        if(user && bcrypt.compareSync(password, user.password)) {
-          const token = buildToken(user)
-            res.status(200).json({message: `welcome, ${user.username}`, token})
-        } else {
-          next({status: 401, message: "invalid credentials"})
-        }
-      })
-      .catch(next)
-   
+     
+      try {
+        const { username, password } = req.body
+        const user = await Users.getByUsername(username)
     
+        if(!user) {
+          return res.status(401).json({
+            message: "invalid credentials"
+          })
+        }
+    
+        const passwordValid =  bcrypt.compareSync(password, user.password)
+    
+        if (!passwordValid) {
+          return res.status(401).json({
+            message: "invalid credentials"
+          })
+        }
+    
+        const token = buildToken(user)
+    
+       
+    
+        res.json({
+          message: `welcome, ${user.username}`,
+          token
+        })
+      } catch(err) {
+        next(err)
+      }
 
      
 });

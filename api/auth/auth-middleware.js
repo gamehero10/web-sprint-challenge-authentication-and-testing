@@ -3,8 +3,6 @@ const Users = require('../../users/user-model');
 
 
 
-
-
 async function checkNewUser(req, res, next)  {
     const user = await Users.getByUsername(req.body.username);
     console.log(user);
@@ -15,6 +13,8 @@ async function checkNewUser(req, res, next)  {
     }
 }
 
+
+  
 
 
 
