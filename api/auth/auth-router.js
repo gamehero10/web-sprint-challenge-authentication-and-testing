@@ -36,12 +36,13 @@ router.post('/register', checkNewUser, validateCredentials , async (req, res, ne
  
   try {
     const {username, password} = req.body;
-    console.log(username, password);
     const user = await Users.createUser({
       username: username,
       password: bcrypt.hashSync(password, 8)
     })
+    console.log(user);
     res.status(201).json(user);
+
   } catch (err) {
      next({status: 400, message: "username and password required"});
   }

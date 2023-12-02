@@ -6,8 +6,6 @@ const Users = require('../../users/user-model');
 
 
 async function checkNewUser(req, res, next)  {
-    console.log(req.body, '1');
-    console.log(req.body.username, '2');
     const user = await Users.getByUsername(req.body.username);
     console.log(user);
     if(user) {
