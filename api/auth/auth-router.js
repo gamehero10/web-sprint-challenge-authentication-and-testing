@@ -7,7 +7,7 @@ const Users = require('../../users/user-model');
 
 
 router.post('/register', checkNewUser, validateCredentials , async (req, res, next) => {
-  res.end('implement register, please!');
+  //res.end('implement register, please!');
   /*
     IMPLEMENT
     You are welcome to build additional middlewares to help with the endpoint's functionality.
@@ -36,6 +36,7 @@ router.post('/register', checkNewUser, validateCredentials , async (req, res, ne
  
   try {
     const {username, password} = req.body;
+    console.log(username, password);
     const user = await Users.createUser({
       username: username,
       password: bcrypt.hashSync(password, 8)
