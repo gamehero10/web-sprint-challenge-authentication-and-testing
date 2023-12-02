@@ -6,7 +6,7 @@ const { checkNewUser, validateCredentials} = require('./auth-middleware');
 const Users = require('../../users/user-model');
 
 
-router.post('/register', checkNewUser, validateCredentials , async (req, res, next) => {
+router.post('/register', validateCredentials, checkNewUser , async (req, res, next) => {
   //res.end('implement register, please!');
   /*
     IMPLEMENT
@@ -44,7 +44,7 @@ router.post('/register', checkNewUser, validateCredentials , async (req, res, ne
     res.status(201).json(user);
 
   } catch (err) {
-     next({status: 400, message: "username and password required"});
+     next(err);
   }
     
 
