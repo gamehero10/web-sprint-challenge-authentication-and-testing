@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
         return res.status(401).json({message: "token required"});
       }
 
-      jwt.verify(token, JWT_SECRET.jwtSecret, (err, decodedToken) => {
+      jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
         if(err) {
         return res.status(401).json({message: "token invalid"});
         } else {
@@ -33,8 +33,9 @@ module.exports = (req, res, next) => {
          next();
         }
       })
-  
-     next();
+   next();
+
+     
       
 };
 
