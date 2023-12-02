@@ -22,19 +22,19 @@ module.exports = (req, res, next) => {
       const token = req.headers.authorization;
 
       if(!token) {
-        return next({status: 401, message: "token required"});
+        return res.status(401).json({message: "token required"});
       }
 
-      jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
+      jwt.verify(token, JWT_SECRET.jwtSecret, (err, decodedToken) => {
         if(err) {
-          next({status: 401, message: "token invalid"});
+        return res.status(401).json({message: "token invalid"});
         } else {
          req.decodedToken = decodedToken;
          next();
         }
       })
   
-
+     next();
       
 };
 
