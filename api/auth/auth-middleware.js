@@ -19,7 +19,7 @@ async function checkNewUser(req, res, next)  {
 
 
 async function validateCredentials(req, res, next) {
-    if(req.body.username && req.body.password) {
+    if(req.body?.username && req.body?.password) {
        next();
     }  else {
        res.status(400).json({message: "username and password required"});
